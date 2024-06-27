@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { connect } from 'react-redux';
+import WordDisplay from './components/WordDisplay.jsx';
+import { setTypedText } from './store/WordSlice';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = ({ typedText, setTypedText }) => {
+  
+  const handleInputChange = (e) => {
+    setTypedText(e.target.value);
+  };
 
   return (
-    <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <WordDisplay typedText={typedText} handleInputChange={handleInputChange} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
 }
 
-export default App
+  const mapStateToProps = (state) => {
+    return {
+      typedText: state.typedText,
+    };
+  };
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      setTypedText: (text) => dispatch(setTypedText(text)),
+    };
+  };
+
+  export default connect(mapStateToProps, mapDispatchToProps)(App);
